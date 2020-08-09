@@ -8,7 +8,7 @@ module.exports = {
         const db = await connection(); // obtenemos la conexión
         //var docs = await db.collection('cultura').find().toArray();
         //res.json(docs);
-        await db.collection('cultura').find().toArray(function(err, result) {
+        await db.collection('cultura').find().toArray((err, result) => {
             if (err) throw err;
             console.log("datos obtenidos");
             res.json(result);
@@ -21,7 +21,7 @@ module.exports = {
         //await db.collection('cultura').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
         //console.log("dato agregado");
-        await db.collection('cultura').insertOne(cultura, function(err, res) {
+        await db.collection('cultura').insertOne(cultura, (err, res) => {
             if (err) throw err;
             console.log("dato agregado");
         });
@@ -38,7 +38,7 @@ module.exports = {
         console.log("Dato borrado");*/
         await db.collection('cultura').deleteOne({
             _id: ObjectID(dato)
-        }, function(err, obj) {
+        }, (err, obj) => {
             if (err) throw err;
             console.log("Dato borrado");
         });
@@ -55,7 +55,7 @@ module.exports = {
         console.log("Dato actualizado");*/
         await db.collection('cultura').updateOne({
             _id: ObjectID(dato)
-        }, nuevoDato, function(err, res) {
+        }, nuevoDato, (err, res) => {
             if (err) throw err;
             console.log("Dato actualizado");
         });
@@ -67,7 +67,7 @@ module.exports = {
         //const cultura = await db.collection('cultura').find({_id: ObjectID(dato)}).toArray();
         //res.json(cultura);
         //console.log("Dato por id obtenido");
-        await db.collection('cultura').find({_id: ObjectID(dato)}).toArray(function(err, result) {
+        await db.collection('cultura').find({_id: ObjectID(dato)}).toArray((err, result) => {
             if (err) throw err;
             console.log("Dato por id obtenido");
             res.json(result);

@@ -9,7 +9,7 @@ module.exports = {
         const db = await connection(); // obtenemos la conexión
         //var docs = await db.collection('nuevaspreguntas').find().toArray();
         //res.json(docs);
-        await db.collection('nuevaspreguntas').find().toArray(function(err, result) {
+        await db.collection('nuevaspreguntas').find().toArray((err, result) => {
             if (err) throw err;
             console.log("datos obtenidos");
             res.json(result);
@@ -17,13 +17,13 @@ module.exports = {
     },
     //agrega la pregunta nueva a la bd de nuevas preguntas
     addNewQuestion: async (req, res) => {
-        const cultura = req.body; //creamos una nueva tarea
+        const npregunta = req.body; //creamos una nueva tarea
         const db = await connection(); // obtenemos la conexión
         //await db.collection('cultura').save(cultura);
         //await db.collection('nuevaspreguntas').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
         //console.log("dato agregado");
-        await db.collection('nuevaspreguntas').insertOne(cultura, function(err, res) {
+        await db.collection('nuevaspreguntas').insertOne(npregunta, (err, res) => {
             if (err) throw err;
             console.log("dato agregado");
         });
@@ -31,20 +31,35 @@ module.exports = {
     //agrega las preguntas ya resueltas a la bd de datos de preguntas-respuestas y la elimina de nuevas-preguntas
    addQuestions: async (req, res) => {
 
-        //obtenemos las preguntas respondidas y luego lo guardo en la bd de preguntas respuestas
-
         const db = await connection(); // obtenemos la conexión de nuevas preguntas
         const db2 = await connection2(); // obtenemos la conexión de preguntas respuestas
-        const respuestas = req.body; //obtenemos las preguntas resueltas enviadas
-        //guardamos en la bd preguntas respuestas
-        //await db2.collection('PregRpta').insertMany(respuestas); 
-        await db2.collection('PregRpta').insertMany(respuestas,function(err, res) {
+        const respuestas = Array.from(req.body); //obtenemos las preguntas resueltas enviadas
+
+        //OJOOOOOO: Para colocar un id incremental
+        var result = await db2.collection('PregRpta').find().limit(1).sort({_id:-1}).toArray(); 
+        let n=0;
+
+        if(result[0]!=null){
+            console.log("se hace el proceso");
+            n = result[0]._id+1;
+        }
+
+        respuestas.forEach((elemento, index) => {
+            elemento._id=index+n;
+        });
+
+
+        //obtenemos las preguntas respondidas y luego lo guardo en la bd de preguntas respuestas
+            //await db2.collection('PregRpta').insertMany(respuestas); 
+        await db2.collection('PregRpta').insertMany(respuestas,(err, res) => {
             if (err) throw err;
             console.log("Datos insertados");
         }); 
+
+
         //elimino todo el contenido de la bd nuevas preguntas
-        //await db.collection('nuevaspreguntas').deleteMany(); 
-        await db.collection('nuevaspreguntas').deleteMany(function(err, obj) {
+            //await db.collection('nuevaspreguntas').deleteMany(); 
+        await db.collection('nuevaspreguntas').deleteMany((err, obj) => {
             if (err) throw err;
             console.log("Datos borrados")
         });
@@ -62,7 +77,7 @@ module.exports = {
         console.log("Dato borrado");*/
         await db.collection('nuevaspreguntas').deleteOne({
             _id: ObjectID(dato)
-        }, function(err, obj) {
+        }, (err, obj) => {
             if (err) throw err;
             console.log("Dato borrado");
         });
@@ -79,7 +94,7 @@ module.exports = {
         console.log("Dato actualizado");*/
         await db.collection('nuevaspreguntas').updateOne({
             _id: ObjectID(dato)
-        }, nuevoDato, function(err, res) {
+        }, nuevoDato, (err, res) => {
             if (err) throw err;
             console.log("Dato actualizado");
         });
@@ -90,7 +105,7 @@ module.exports = {
         //const cultura = await db.collection('nuevaspreguntas').find({_id: ObjectID(dato)}).toArray();
         //res.json(cultura);
         //console.log("Dato por id obtenido");
-        await db.collection('nuevaspreguntas').find({_id: ObjectID(dato)}).toArray(function(err, result) {
+        await db.collection('nuevaspreguntas').find({_id: ObjectID(dato)}).toArray((err, result) => {
             if (err) throw err;
             console.log("Dato por id obtenido");
             res.json(result);
