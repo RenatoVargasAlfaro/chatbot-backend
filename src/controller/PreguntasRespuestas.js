@@ -21,7 +21,7 @@ module.exports = {
         //await db.collection('PregRpta').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
         //console.log("dato agregado");
-
+        //console.log(preguntas);
 
         var result = await db.collection('PregRpta').find().limit(1).sort({_id:-1}).toArray();
         //let n = result[0]._id+1;
@@ -50,9 +50,10 @@ module.exports = {
             elemento._id=index+n;
         });
 
-        await db.collection('PregRpta').insertMany(preguntas, (err, res) => {
+        await db.collection('PregRpta').insertMany(preguntas, (err, result) => {
             if (err) throw err;
             console.log("datos agregados");
+            res.json(result.ops[0]);
         });
 
 //----------------------------------------------------------------
@@ -120,9 +121,10 @@ module.exports = {
         console.log("Dato actualizado");*/
         await db.collection('PregRpta').updateOne({
             _id: parseInt(dato) //como ya no es un id de mongo, se pasa asi como numero
-        }, nuevoDato, (err, res) => {
+        }, nuevoDato, (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
+            res.json(nuevoDato);
         });
     },
     getQuestionbyId: async (req, res) => {

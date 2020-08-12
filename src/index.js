@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
+const cors = require('cors');
 //const bodyParser= require('body-parser')
 const app = express();
 
@@ -21,6 +22,7 @@ app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
 
 //middlewares
+app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false})); //permite entender los datos que se envia desde un formulario html
