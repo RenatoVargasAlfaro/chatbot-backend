@@ -3,9 +3,11 @@ const { MongoClient } = require('mongodb');
 // Nombre de bd
 const dbName = 'Culturaeeee';
 // Conexión URL (estas corriendo en local)
-const url = 'mongodb://localhost:27017';
+//const url = 'mongodb://localhost:27017';
 
-const client = new MongoClient(url, {
+const config = require('../config/config');
+
+const client = new MongoClient(config.URL, {
   useUnifiedTopology: true
 });
 

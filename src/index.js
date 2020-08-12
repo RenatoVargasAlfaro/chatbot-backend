@@ -27,11 +27,13 @@ app.use(express.urlencoded({extended: false})); //permite entender los datos que
 //app.use(bodyParser.urlencoded({ extended: true }));
 
 //routes
+const authRouter = require('./routes/AuthRouter');
 const route = require('./routes/Pacientes');
 const route2 = require('./routes/Cultura');
 const route3 = require('./routes/PreguntasRespuestas');
 const route4 = require('./routes/NuevasPreguntas');
 const route5 = require('./routes/Recetas');
+app.use('/auth', authRouter);
 app.use('/Paciente', route);
 app.use('/Cultura', route2);
 app.use('/Pregunta', route3);

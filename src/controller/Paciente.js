@@ -21,10 +21,31 @@ module.exports = {
         //await db.collection('paciente').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
         //console.log("dato agregado");
-        await db.collection('paciente').insertOne(paciente, (err, res) => {
+        
+        let dni = req.body.dni;
+        let correo = req.body.correo;
+        const dniModel = dni;
+        const correModel = correo;
+        //validar si ya existe
+        const pacienteGuardado = await db.collection('paciente').findOne({
+            "dni": dniModel,
+            "correo": correModel
+        });
+        if (!pacienteGuardado) {
+            await db.collection('paciente').insertOne(paciente, (err, res) => {
+                if (err) throw err;
+                console.log("dato agregado");
+            });
+        } else {
+            res.json({
+                message: "El paciente ya existe"
+            });
+        }
+        
+        /*await db.collection('paciente').insertOne(paciente, (err, res) => {
             if (err) throw err;
             console.log("dato agregado");
-        });
+        });*/
     },
     deletePacients: async (req, res) => {
         const dato = req.params.id;
