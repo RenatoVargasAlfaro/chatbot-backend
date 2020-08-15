@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
 //importamos las funciones controller
+const authentication = require('../middlewares/Auth');
 const controller = require('../controller/Recetas');
 
 //router.get('/obtener', controller.getProducts);
 
-router.get('/', controller.getRecipe);
+router.get('/', authentication.isAuth, controller.getRecipe);
 
-router.post('/add', controller.addRecipe);
+router.post('/add', authentication.isAuth, controller.addRecipe);
 
-router.delete('/delete/:id', controller.deleteRecipe);
+router.delete('/delete/:id', authentication.isAuth, controller.deleteRecipe);
 
-router.put('/update/:id', controller.updateRecipe);
+router.put('/update/:id', authentication.isAuth, controller.updateRecipe);
 
-router.get('/edit/:id', controller.getRecipebyId);
+router.get('/edit/:id', authentication.isAuth, controller.getRecipebyId);
 
 
 /*

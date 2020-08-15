@@ -23,13 +23,10 @@ module.exports = {
         //console.log("dato agregado");
         
         let dni = req.body.dni;
-        let correo = req.body.correo;
         const dniModel = dni;
-        const correModel = correo;
         //validar si ya existe
         const pacienteGuardado = await db.collection('paciente').findOne({
-            "dni": dniModel,
-            "correo": correModel
+            "dni": dniModel
         });
         if (!pacienteGuardado) {
             await db.collection('paciente').insertOne(paciente, (err, res) => {

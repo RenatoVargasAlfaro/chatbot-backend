@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
 //importamos las funciones controller
+const authentication = require('../middlewares/Auth');
 const controller = require('../controller/Paciente');
 
 //router.get('/obtener', controller.getProducts);
 
-router.get('/', controller.getPacients);
+router.get('/', authentication.isAuth, controller.getPacients);
 
-router.post('/add', controller.addPacients);
+router.post('/add', authentication.isAuth, controller.addPacients);
 
-router.delete('/delete/:id', controller.deletePacients);
+router.delete('/delete/:id', authentication.isAuth, controller.deletePacients);
 
-router.put('/update/:id', controller.updatePacients);
+router.put('/update/:id', authentication.isAuth, controller.updatePacients);
 
-router.get('/edit/:id', controller.getPacientsbyId);
+router.get('/edit/:id', authentication.isAuth, controller.getPacientsbyId);
 
 
 /*

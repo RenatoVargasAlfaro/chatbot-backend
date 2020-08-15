@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
 //importamos las funciones controller
+const authentication = require('../middlewares/Auth');
 const controller = require('../controller/PreguntasRespuestas');
 
 //router.get('/obtener', controller.getProducts);
 
-router.get('/', controller.getQuestion);
+router.get('/', authentication.isAuth, controller.getQuestion);
 
-router.post('/add', controller.addQuestion);
+router.post('/add', authentication.isAuth, controller.addQuestion);
 
-router.delete('/delete/:id', controller.deleteQuestion);
+router.delete('/delete/:id', authentication.isAuth, controller.deleteQuestion);
 
-router.put('/update/:id', controller.updateQuestion);
+router.put('/update/:id', authentication.isAuth, controller.updateQuestion);
 
-router.get('/edit/:id', controller.getQuestionbyId);
+router.get('/edit/:id', authentication.isAuth, controller.getQuestionbyId);
 
 
 /*

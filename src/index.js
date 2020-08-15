@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const cors = require('cors');
+//const ioServer = require('./server/index')(app);
+const restFul = require('express-method-override')('_method');
 //const bodyParser= require('body-parser')
 const app = express();
 
@@ -27,6 +29,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false})); //permite entender los datos que se envia desde un formulario html
 //app.use(bodyParser.urlencoded({ extended: true }));
+app.use(restFul);
 
 //routes
 const authRouter = require('./routes/AuthRouter');
