@@ -45,7 +45,7 @@ app.use('/Cultura', route2);
 app.use('/Pregunta', route3);
 app.use('/NPregunta', route4);
 app.use('/Receta', route5);
-app.use('/chatbot',chatbot);
+app.use('/chatbot', chatbot);
 
 app.use(function (req, res, next) {
     return res.status(404).send({

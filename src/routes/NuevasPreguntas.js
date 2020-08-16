@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 //importamos las funciones controller
-const authentication = require('../middlewares/Auth');
+const authentication = require('../middlewares/auth');
 const controller = require('../controller/NuevasPreguntas');
 
 //router.get('/obtener', controller.getProducts);
