@@ -32,7 +32,7 @@ app.use(express.urlencoded({extended: false})); //permite entender los datos que
 app.use(restFul);
 
 //routes
-const authRouter = require('./routes/AuthRouter');
+const authRouter = require('./routes/authRouter');
 const route = require('./routes/Pacientes');
 const route2 = require('./routes/Cultura');
 const route3 = require('./routes/PreguntasRespuestas');
