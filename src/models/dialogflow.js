@@ -12,7 +12,9 @@ class DialogFlow {
 	constructor (projectId) {
 		this.projectId = projectId
 
-		let privateKey = (process.env.NODE_ENV=="production") ? JSON.parse(process.env.DIALOGFLOW_PRIVATE_KEY) : process.env.DIALOGFLOW_PRIVATE_KEY
+		// let privateKey = (process.env.NODE_ENV=="production") ? JSON.parse(process.env.DIALOGFLOW_PRIVATE_KEY) : process.env.DIALOGFLOW_PRIVATE_KEY
+		let privateKey = process.env.DIALOGFLOW_PRIVATE_KEY
+
 		let clientEmail = process.env.DIALOGFLOW_CLIENT_EMAIL
 		let config = {
 			credentials: {
