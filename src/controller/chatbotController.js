@@ -12,8 +12,8 @@ async function getChatbot(req, res) {
 		const token = bearerHeader[1]
 		console.log(token)
 		try {
-			const decoded = jwt.verify(token, tokens.USER_TOKEN)
-			console.log(decoded)
+				//const decoded = jwt.verify(token, tokens.USER_TOKEN)
+				//console.log(decoded)
 			//console.log(sessionId)
 			var textMessage = req.body.mensaje
 			const chatbot = new clasedialog.DialogFlow(clasedialog.projectId)
