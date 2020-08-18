@@ -16,6 +16,8 @@ router.put('/update/:id', authentication.isAuth, controller.updateRecipe);
 
 router.get('/edit/:id', authentication.isAuth, controller.getRecipebyId);
 
+router.get('/title', authentication.isAuth, controller.getRecipeString);
+
 
 /*
 router.post('/add', async (req, res) => {

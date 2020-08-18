@@ -71,5 +71,20 @@ module.exports = {
             console.log("Dato por id obtenido");
             res.json(result);
         });
+    },
+    getRecipeString: async (req, res) => {
+        const db = await connection(); // obtenemos la conexión
+        //var docs = await db.collection('Receta').find().toArray();
+        //res.json(docs);
+        var result = await db.collection('Receta').find().toArray();
+        var arreglo = []
+
+        result.forEach((elemento, index) => {
+            //console.log(typeof(elemento.titulo))
+            arreglo.push(elemento.titulo)
+        });
+
+        //console.log(typeof(arreglo.toString()))
+        res.json(arreglo)
     }
 }
