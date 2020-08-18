@@ -46,9 +46,11 @@ async function getChatbot(req, res) {
 			}
 
 		} catch (err) {
+			console.log(err);
 			res.json({
 				token: "Token Invalido"
 			})
+
 		}
 
 	}
