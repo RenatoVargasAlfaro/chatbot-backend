@@ -23,7 +23,7 @@ module.exports = {
         //console.log("dato agregado");
         //console.log(preguntas);
 
-        var result = await db.collection('PregRpta').find().limit(1).sort({_id:-1}).toArray();
+        var result = await db.collection('PregRpta').find().limit(1).sort({id:-1}).toArray();
         //let n = result[0]._id+1;
         //res.json(result[0]._id);
         //console.log(n);
@@ -43,11 +43,11 @@ module.exports = {
 
         if(result[0]!=null){
             console.log("se hace el proceso");
-            n = result[0]._id+1;
+            n = result[0].id+1;
         }
 
         preguntas.forEach((elemento, index) => {
-            elemento._id=index+n;
+            elemento.id=index+n;
         });
 
         await db.collection('PregRpta').insertMany(preguntas, (err, result) => {
@@ -102,7 +102,7 @@ module.exports = {
         });
         console.log("Dato borrado");*/
         await db.collection('PregRpta').deleteOne({
-            _id: parseInt(dato) //como ya no es un id de mongo, se pasa asi como numero
+            id: parseInt(dato) //como ya no es un id de mongo, se pasa asi como numero
             //_id: ObjectID(dato)
         }, (err, obj) => {
             if (err) throw err;
@@ -120,7 +120,7 @@ module.exports = {
         }, nuevoDato);
         console.log("Dato actualizado");*/
         await db.collection('PregRpta').updateOne({
-            _id: parseInt(dato) //como ya no es un id de mongo, se pasa asi como numero
+            id: parseInt(dato) //como ya no es un id de mongo, se pasa asi como numero
         }, nuevoDato, (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
@@ -133,7 +133,7 @@ module.exports = {
         //const cultura = await db.collection('PregRpta').find({_id: ObjectID(dato)}).toArray();
         //res.json(cultura);
         //console.log("Dato por id obtenido");
-        await db.collection('PregRpta').find({_id: parseInt(dato)}).toArray((err, result) => {
+        await db.collection('PregRpta').find({id: parseInt(dato)}).toArray((err, result) => {
             if (err) throw err;
             console.log("Dato por id obtenido");
             res.json(result);

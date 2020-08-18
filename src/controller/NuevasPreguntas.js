@@ -36,16 +36,16 @@ module.exports = {
         const respuestas = Array.from(req.body); //obtenemos las preguntas resueltas enviadas
 
         //OJOOOOOO: Para colocar un id incremental
-        var result = await db2.collection('PregRpta').find().limit(1).sort({_id:-1}).toArray(); 
+        var result = await db2.collection('PregRpta').find().limit(1).sort({id:-1}).toArray(); 
         let n=0;
 
         if(result[0]!=null){
             console.log("se hace el proceso");
-            n = result[0]._id+1;
+            n = result[0].id+1;
         }
 
         respuestas.forEach((elemento, index) => {
-            elemento._id=index+n;
+            elemento.id=index+n;
         });
 
 
