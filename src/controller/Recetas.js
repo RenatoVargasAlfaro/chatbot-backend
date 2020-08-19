@@ -86,5 +86,19 @@ module.exports = {
 
         //console.log(typeof(arreglo.toString()))
         res.json(arreglo)
+    },
+    getRecipeTitle: async (req, res) => {
+        const nombre = req.query.name;
+        const tokens = nombre.split('$20')
+        const frase = tokens.join(' ')
+
+        const db = await connection(); // obtenemos la conexión
+        //var docs = await db.collection('paciente').find().toArray();
+        //res.json(docs);
+        await db.collection('Receta').find({titulo: frase}).toArray((err, result) => {
+            if (err) throw err;
+            console.log("datos obtenidos");
+            res.json(result);
+        });
     }
 }

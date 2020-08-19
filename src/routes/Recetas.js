@@ -18,6 +18,8 @@ router.get('/edit/:id', authentication.isAuth, controller.getRecipebyId);
 
 router.get('/title', authentication.isAuth, controller.getRecipeString);
 
+router.get('/name', authentication.isAuth, controller.getRecipeTitle);
+
 
 /*
 router.post('/add', async (req, res) => {
