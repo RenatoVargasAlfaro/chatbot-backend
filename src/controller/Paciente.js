@@ -92,11 +92,13 @@ module.exports = {
     },
     getPacientsString: async (req, res) => {
         const nombre = req.query.name;
-        console.log(req.query.name)
+        const tokens = nombre.split('$20')
+        const frase = tokens.join(' ')
+
         const db = await connection(); // obtenemos la conexión
         //var docs = await db.collection('paciente').find().toArray();
         //res.json(docs);
-        await db.collection('paciente').find({receta: nombre.replace('$20', ' ')}).toArray((err, result) => {
+        await db.collection('paciente').find({receta: frase}).toArray((err, result) => {
             if (err) throw err;
             console.log("datos obtenidos");
             res.json(result);
