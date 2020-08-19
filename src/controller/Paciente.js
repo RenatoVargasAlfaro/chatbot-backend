@@ -89,5 +89,17 @@ module.exports = {
             console.log("Dato por id obtenido");
             res.json(result);
         });
+    },
+    getPacientsString: async (req, res) => {
+        const nombre = req.query.name;
+        console.log(req.query.name)
+        const db = await connection(); // obtenemos la conexión
+        //var docs = await db.collection('paciente').find().toArray();
+        //res.json(docs);
+        await db.collection('paciente').find({receta: nombre.replace('$20', ' ')}).toArray((err, result) => {
+            if (err) throw err;
+            console.log("datos obtenidos");
+            res.json(result);
+        });
     }
 }
