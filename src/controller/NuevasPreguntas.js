@@ -33,10 +33,20 @@ module.exports = {
 
         const db = await connection(); // obtenemos la conexión de nuevas preguntas
         const db2 = await connection2(); // obtenemos la conexión de preguntas respuestas
-        const respuestas = Array.from(req.body); //obtenemos las preguntas resueltas enviadas
+        var respuestas = Array.from(req.body); //obtenemos las preguntas resueltas enviadas
 
         //OJOOOOOO: Para colocar un id incremental
         var result = await db2.collection('PregRpta').find().limit(1).sort({id:-1}).toArray(); 
+
+        var arreglo =[]
+        respuestas.forEach((elemento, index) => {
+            if(elemento.estado!='Entrenado'){
+                arreglo.push(elemento)
+            }
+        });
+        respuestas=arreglo
+        
+
         let n=0;
 
         if(result[0]!=null){
