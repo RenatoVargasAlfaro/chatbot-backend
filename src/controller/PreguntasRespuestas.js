@@ -37,7 +37,7 @@ module.exports = {
         });*/
         var arreglo =[]
         preguntas.forEach((elemento, index) => {
-            if(elemento.estado!='Entrenado' || elemento.estado!='entrenado'){
+            if(elemento.estado!='Entrenado'){
                 arreglo.push(elemento)
             }
         });
