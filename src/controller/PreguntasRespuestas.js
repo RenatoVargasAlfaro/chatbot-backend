@@ -3,6 +3,8 @@ const connection = require('../connection/db-PreguntasRespuestas');
 const assert = require('assert');
 const { ObjectID } = require('mongodb');
 
+const chatbotController = require('./chatbotController');
+
 module.exports = {
     getQuestion: async (req, res) => {
         const db = await connection(); // obtenemos la conexión
@@ -45,6 +47,41 @@ module.exports = {
         //console.log("------",preguntas)
 
 
+        var consultas = []
+        var respuestas1 = []
+        var respuestas2 = []
+
+        //aca guardamos las preguntas
+        preguntas.forEach((e, i) => {
+            if(e.intencion=="Consulta Malestares"){
+                consultas.push(e.consulta)
+            }
+        })
+        console.log(consultas)
+
+
+        //aca guardaremos las respuestas
+        preguntas.forEach((e, i) => {
+            if(e.intencion=="Consulta Malestares"){
+                respuestas1.push(e.respuestas)
+            }
+        })
+        console.log(respuestas1)
+        respuestas1.forEach((e, i) => {
+            e.forEach((x, i) => {
+                respuestas2.push(x.text)
+            })
+        })
+        console.log(respuestas2)
+
+        
+        //var a = ["a", "b", "c"]
+        //var b= ["Ra", "Rb", "Rc"]
+        chatbotController.testUpdateTraining("f2203c32-3243-4ad4-96d7-25b0091891af", consultas, respuestas2);
+
+
+
+
 //----------------------------------------------------------------
 
         //OJOOOOOO: Para colocar un id incremental
@@ -57,6 +94,7 @@ module.exports = {
 
         preguntas.forEach((elemento, index) => {
             elemento.id=index+n;
+            elemento.estado='Entrenado';
         });
 
         await db.collection('PregRpta').insertMany(preguntas, (err, result) => {

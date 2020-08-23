@@ -24,6 +24,7 @@ class DialogFlow {
 		}
 	
 		this.sessionClient = new dialogflow.SessionsClient(config)
+		this.intentsClient = new dialogflow.IntentsClient(config)
 	}	
 }
 
