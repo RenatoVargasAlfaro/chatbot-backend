@@ -15,7 +15,7 @@ module.exports = {
         });
     },
     addQuestion: async (req, res) => {
-        const preguntas = Array.from(req.body); //se usa esto para volverlo array
+        var preguntas = Array.from(req.body); //se usa esto para volverlo array
         const db = await connection(); // obtenemos la conexión
         //await db.collection('cultura').save(cultura);
         //await db.collection('PregRpta').insertOne(cultura);
@@ -35,6 +35,15 @@ module.exports = {
             console.log("datos obtenidos");
             res.json(result[0]._id);
         });*/
+        var arreglo =[]
+        preguntas.forEach((elemento, index) => {
+            if(elemento.estado!='Entrenado' || elemento.estado!='entrenado'){
+                arreglo.push(elemento)
+            }
+        });
+        preguntas=arreglo
+        //console.log("------",preguntas)
+
 
 //----------------------------------------------------------------
 
