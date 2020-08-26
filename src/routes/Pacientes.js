@@ -16,6 +16,8 @@ router.put('/update/:id', authentication.isAuth, controller.updatePacients);
 
 router.get('/edit/:id', authentication.isAuth, controller.getPacientsbyId);
 
+router.get('/email/:email', authentication.isAuth, controller.getPacientsbyEmail);
+
 router.get('/title', authentication.isAuth, controller.getPacientsString);
 
 

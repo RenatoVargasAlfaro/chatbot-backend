@@ -103,5 +103,19 @@ module.exports = {
             console.log("datos obtenidos");
             res.json(result);
         });
-    }
+    },
+
+    getPacientsbyEmail: async (req, res) => {
+        const db = await connection(); // obtenemos la conexión
+        const email = req.params.email; 
+        console.log(email)
+        //const cultura = await db.collection('paciente').find({_id: ObjectID(dato)}).toArray();
+        //res.json(cultura);
+        //console.log("Dato por id obtenido");
+        await db.collection('paciente').find({correo: email}).toArray((err, result) => {
+            if (err) throw err;
+            console.log("Dato por email obtenido");
+            res.json(result);
+        });
+    },
 }
