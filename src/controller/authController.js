@@ -21,7 +21,8 @@ async function signin(req, res) {
             });
         } else {
             let perfil = {
-                token: jwt.createUserToken({
+                token: jwt.createUserToken(user[0]),
+                /*token: jwt.createUserToken({
                     nombre: user.nombre,
                     apellidoPaterno: user.apellidoPaterno,
                     apellidoMaterno: user.apellidoMaterno,
@@ -39,7 +40,7 @@ async function signin(req, res) {
                     contrasenia: user.contrasenia,
                     rol: user.rol,
                     fechaRegistro: new Date()
-                }),
+                }),*/
                 user: user[0]
             }
              res.status(200).json(perfil);
