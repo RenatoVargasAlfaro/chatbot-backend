@@ -41,7 +41,7 @@ const storage = multer.diskStorage({
   destination: path.join(__dirname, 'public/img/uploads'),
   filename: (req, file, cb, filename) => {
       console.log(file);
-      cb(null, 'abcd' + path.extname(file.originalname));
+      cb(null, file.originalname);
   }
 }) 
 app.use(multer({storage}).single('image'));

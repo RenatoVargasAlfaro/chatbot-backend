@@ -154,6 +154,7 @@ module.exports = {
         }, (err, obj) => {
             if (err) throw err;
             console.log("Dato borrado");
+            res.json("Borrado");
         });
     },
     updateQuestion: async (req, res) => {
@@ -171,7 +172,7 @@ module.exports = {
         }, nuevoDato, (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
-            res.json(nuevoDato);
+            res.json("Actualizado");
         });
     },
     getQuestionbyId: async (req, res) => {

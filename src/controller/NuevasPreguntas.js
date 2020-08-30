@@ -25,9 +25,10 @@ module.exports = {
         //await db.collection('nuevaspreguntas').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
         //console.log("dato agregado");
-        await db.collection('nuevaspreguntas').insertOne(npregunta, (err, res) => {
+        await db.collection('nuevaspreguntas').insertOne(npregunta, (err, result) => {
             if (err) throw err;
             console.log("dato agregado");
+            res.json("Agregado");
         });
     },
     //agrega las preguntas ya resueltas a la bd de datos de preguntas-respuestas y la elimina de nuevas-preguntas
@@ -100,9 +101,10 @@ module.exports = {
 
         //obtenemos las preguntas respondidas y luego lo guardo en la bd de preguntas respuestas
             //await db2.collection('PregRpta').insertMany(respuestas); 
-        await db2.collection('PregRpta').insertMany(respuestas,(err, res) => {
+        await db2.collection('PregRpta').insertMany(respuestas,(err, result) => {
             if (err) throw err;
             console.log("Datos insertados");
+            res.json("Insertado");
         }); 
 
 
@@ -111,6 +113,7 @@ module.exports = {
         await db.collection('nuevaspreguntas').deleteMany((err, obj) => {
             if (err) throw err;
             console.log("Datos borrados")
+            res.json("Borrados");
         });
         console.log("datos respondidos y eliminados");
     },
@@ -129,6 +132,7 @@ module.exports = {
         }, (err, obj) => {
             if (err) throw err;
             console.log("Dato borrado");
+            res.json("Borrado");
         });
     },
     updateNewQuestion: async (req, res) => {
@@ -143,9 +147,10 @@ module.exports = {
         console.log("Dato actualizado");*/
         await db.collection('nuevaspreguntas').updateOne({
             _id: ObjectID(dato)
-        }, nuevoDato, (err, res) => {
+        }, nuevoDato, (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
+            res.json("Actualizado");
         });
     },
     getNewQuestionbyId: async (req, res) => {

@@ -21,9 +21,10 @@ module.exports = {
         //await db.collection('cultura').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
         //console.log("dato agregado");
-        await db.collection('cultura').insertOne(cultura, (err, res) => {
+        await db.collection('cultura').insertOne(cultura, (err, result) => {
             if (err) throw err;
             console.log("dato agregado");
+            res.json("Agregado");
         });
     },
     deleteCulture: async (req, res) => {
@@ -41,6 +42,7 @@ module.exports = {
         }, (err, obj) => {
             if (err) throw err;
             console.log("Dato borrado");
+            res.json("Borrado");
         });
     },
     updateCulture: async (req, res) => {
@@ -55,9 +57,10 @@ module.exports = {
         console.log("Dato actualizado");*/
         await db.collection('cultura').updateOne({
             _id: ObjectID(dato)
-        }, nuevoDato, (err, res) => {
+        }, nuevoDato, (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
+            res.json("Actualizado");
         });
         
     },

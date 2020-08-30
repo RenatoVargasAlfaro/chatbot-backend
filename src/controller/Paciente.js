@@ -29,9 +29,10 @@ module.exports = {
             "dni": dniModel
         });
         if (!pacienteGuardado) {
-            await db.collection('paciente').insertOne(paciente, (err, res) => {
+            await db.collection('paciente').insertOne(paciente, (err, result) => {
                 if (err) throw err;
                 console.log("dato agregado");
+                res.json("Agregado");
             });
         } else {
             res.json({
@@ -59,6 +60,7 @@ module.exports = {
         }, (err, obj) => {
             if (err) throw err;
             console.log("Dato borrado");
+            res.json("Borrado");
         });
     },
     updatePacients: async (req, res) => {
@@ -73,9 +75,10 @@ module.exports = {
         console.log("Dato actualizado");*/
         await db.collection('paciente').updateOne({
             _id: ObjectID(dato)
-        }, nuevoDato, (err, res) => {
+        }, nuevoDato, (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
+            res.json("Actualizado");
         });
     },
     getPacientsbyId: async (req, res) => {

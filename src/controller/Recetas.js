@@ -57,9 +57,10 @@ module.exports = {
         await unlink(path.resolve('./src/public' + rec.path));
 
         //guarda en la bd
-        await db.collection('Receta').insertOne(rec, (err, res) => {
+        await db.collection('Receta').insertOne(rec, (err, result) => {
             if (err) throw err;
             console.log("dato agregado");
+            res.json("Agregado");
         });
     },
     deleteRecipe: async (req, res) => {
@@ -88,6 +89,7 @@ module.exports = {
         }, (err, obj) => {
             if (err) throw err;
             console.log("Dato borrado");
+            res.json("Borrado");
         });
     },
     updateRecipe: async (req, res) => {
@@ -102,9 +104,10 @@ module.exports = {
         console.log("Dato actualizado");*/
         await db.collection('Receta').updateOne({
             _id: ObjectID(dato)
-        }, nuevoDato, (err, res) => {
+        }, nuevoDato, (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
+            res.json("Actualizado");
         });
     },
     getRecipebyId: async (req, res) => {
