@@ -3,6 +3,18 @@ const connection = require('../connection/db-Recetas');
 const assert = require('assert');
 const { ObjectID } = require('mongodb');
 
+const path = require('path');
+const { unlink } = require('fs-extra');
+
+const cloudinary = require('cloudinary');
+const cloud = require('../config/config')
+
+cloudinary.config({
+    cloud_name: cloud.cloud_name,
+    api_key: cloud.api_key,
+    api_secret: cloud.api_secret
+})
+
 module.exports = {
     getRecipe: async (req, res) => {
         const db = await connection(); // obtenemos la conexión
@@ -21,7 +33,31 @@ module.exports = {
         //await db.collection('Receta').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
         //console.log("dato agregado");
-        await db.collection('Receta').insertOne(receta, (err, res) => {
+
+        //guarda en cloudinary
+        const result = await cloudinary.v2.uploader.upload(req.file.path);
+        //console.log(result);
+        //res.json("guardado")
+   
+        const rec = {
+            titulo: receta.titulo,
+            contenido: receta.contenido,
+            filename : req.file.filename,
+            path : '/img/uploads/' + req.file.filename,
+            originalname : req.file.originalname,
+            mimetype : req.file.mimetype,
+            size : req.file.size,
+            public_id: result.public_id,
+            url: result.url          
+        }
+        //console.log(rec)
+        //res.json("recibido")
+
+        //borra de la carpeta public para evitar aumentar espacio
+        await unlink(path.resolve('./src/public' + rec.path));
+
+        //guarda en la bd
+        await db.collection('Receta').insertOne(rec, (err, res) => {
             if (err) throw err;
             console.log("dato agregado");
         });
@@ -36,6 +72,17 @@ module.exports = {
             _id: ObjectID(dato)
         });
         console.log("Dato borrado");*/
+
+        
+        //permite borrarlo de cloudinary
+        const receta = await db.collection('Receta').find({_id: ObjectID(dato)}).toArray();
+        //await unlink(path.resolve('./src/public' + receta[0].path));
+        const result = await cloudinary.v2.uploader.destroy(receta[0].public_id)
+        
+        //console.log(result)
+        //console.log(receta)
+
+        //lo borra de la bd
         await db.collection('Receta').deleteOne({
             _id: ObjectID(dato)
         }, (err, obj) => {

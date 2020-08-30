@@ -7,4 +7,8 @@ module.exports = {
     /** estaesmillavesecreta*/
     USER_TOKEN: 'estaesmillavesecreta',
 
+    cloud_name: 'dpleiuo4s',
+    api_key: '924296689676164',
+    api_secret: 'fyOyG-DAdgUBrxk3VLfMbflox_Y'
+    
 }

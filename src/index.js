@@ -7,6 +7,11 @@ const restFul = require('express-method-override')('_method');
 //const bodyParser= require('body-parser')
 const app = express();
 
+const multer = require('multer');
+const uuid = require('uuid/v4');
+
+
+
 /*
 //----------------------------------------//
 //requerimos el modulo de mongoose
@@ -31,6 +36,18 @@ app.use(express.urlencoded({extended: false})); //permite entender los datos que
 //app.use(bodyParser.urlencoded({ extended: true }));
 app.use(restFul);
 
+
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, 'public/img/uploads'),
+  filename: (req, file, cb, filename) => {
+      console.log(file);
+      cb(null, uuid() + path.extname(file.originalname));
+  }
+}) 
+app.use(multer({storage}).single('image'));
+
+
+
 //routes
 const authRouter = require('./routes/authRouter');
 const route = require('./routes/Pacientes');
@@ -48,6 +65,10 @@ app.use('/NPregunta', route4);
 app.use('/Receta', route5);
 app.use('/Calendario', route6);
 app.use('/chatbot', chatbot);
+
+// static files
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use(function (req, res, next) {
     return res.status(404).send({
