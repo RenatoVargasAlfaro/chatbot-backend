@@ -73,12 +73,17 @@ module.exports = {
             _id: ObjectID(dato)
         }, nuevoDato);
         console.log("Dato actualizado");*/
+
+        
+        //console.log(actualizado)
+
         await db.collection('paciente').updateOne({
             _id: ObjectID(dato)
-        }, nuevoDato, (err, result) => {
+        }, nuevoDato, async (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
-            res.json("Actualizado");
+            const actualizado = await db.collection('paciente').find({_id: ObjectID(dato)}).toArray();
+            res.json(actualizado);
         });
     },
     getPacientsbyId: async (req, res) => {
