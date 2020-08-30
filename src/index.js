@@ -8,7 +8,7 @@ const restFul = require('express-method-override')('_method');
 const app = express();
 
 const multer = require('multer');
-const uuid = require('uuid/v4');
+//const uuid = require('uuid/v4');
 
 
 
@@ -41,7 +41,7 @@ const storage = multer.diskStorage({
   destination: path.join(__dirname, 'public/img/uploads'),
   filename: (req, file, cb, filename) => {
       console.log(file);
-      cb(null, uuid() + path.extname(file.originalname));
+      cb(null, 'abcd' + path.extname(file.originalname));
   }
 }) 
 app.use(multer({storage}).single('image'));
