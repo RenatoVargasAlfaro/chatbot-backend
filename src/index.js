@@ -30,6 +30,7 @@ app.set('port', process.env.PORT || 8000);
 
 //middlewares
 app.use(cors());
+app.options('*', cors());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false})); //permite entender los datos que se envia desde un formulario html
