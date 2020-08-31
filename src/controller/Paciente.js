@@ -74,9 +74,6 @@ module.exports = {
         }, nuevoDato);
         console.log("Dato actualizado");*/
 
-        
-        //console.log(actualizado)
-
         await db.collection('paciente').updateOne({
             _id: ObjectID(dato)
         }, nuevoDato, async (err, result) => {
