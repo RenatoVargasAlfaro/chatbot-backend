@@ -14,6 +14,8 @@ router.delete('/delete/:id', authentication.isAuth, controller.deleteRecipe);
 
 router.put('/update/:id', authentication.isAuth, controller.updateRecipe);
 
+router.put('/update/image/:id', authentication.isAuth, controller.updateRecipeImage);
+
 router.get('/edit/:id', authentication.isAuth, controller.getRecipebyId);
 
 router.get('/title', authentication.isAuth, controller.getRecipeString);

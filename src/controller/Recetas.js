@@ -111,6 +111,49 @@ module.exports = {
             res.json("Borrado");
         });
     },
+    updateRecipeImage: async (req, res) => {
+        const dato = req.params.id;
+        //obtiene los datos a actualizar
+        //const nuevoDato = req.body;
+        //const nuevoDato = { $set: req.body };
+        const db = await connection(); // obtenemos la conexión
+        /*await db.collection('Receta').updateOne({
+            _id: ObjectID(dato)
+        }, nuevoDato);
+        console.log("Dato actualizado");*/
+        if(req.file!=null){
+            //guarda en cloudinary
+            const result = await cloudinary.v2.uploader.upload(req.file.path);  
+            rec = {
+                filename : req.file.filename,
+                path : '/img/uploads/' + req.file.filename,
+                originalname : req.file.originalname,
+                mimetype : req.file.mimetype,
+                size : req.file.size,
+                public_id: result.public_id,
+                url: result.url          
+            }
+            //borra de la carpeta public para evitar aumentar espacio
+            await unlink(path.resolve('./src/public' + rec.path));
+        }else{
+            rec = {
+                filename : null,
+                path : null,
+                originalname : null,
+                mimetype : null,
+                size : null,
+                public_id: null,
+                url: null          
+            }
+        }
+        await db.collection('Receta').updateOne({
+            _id: ObjectID(dato)
+        }, {$set: rec}, (err, result) => {
+            if (err) throw err;
+            console.log("Dato actualizado");
+            res.json("Actualizada imagen");
+        });
+    },
     updateRecipe: async (req, res) => {
         const dato = req.params.id;
         //obtiene los datos a actualizar
