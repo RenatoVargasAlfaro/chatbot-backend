@@ -148,10 +148,11 @@ module.exports = {
         }
         await db.collection('Receta').updateOne({
             _id: ObjectID(dato)
-        }, {$set: rec}, (err, result) => {
+        }, {$set: rec}, async (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
-            res.json("Actualizada imagen");
+            const actualizado = await db.collection('Receta').find({_id: ObjectID(dato)}).toArray();
+            res.json(actualizado);
         });
     },
     updateRecipe: async (req, res) => {
@@ -166,10 +167,11 @@ module.exports = {
         console.log("Dato actualizado");*/
         await db.collection('Receta').updateOne({
             _id: ObjectID(dato)
-        }, nuevoDato, (err, result) => {
+        }, nuevoDato, async (err, result) => {
             if (err) throw err;
             console.log("Dato actualizado");
-            res.json("Actualizado");
+            const actualizado = await db.collection('Receta').find({_id: ObjectID(dato)}).toArray();
+            res.json(actualizado);
         });
     },
     getRecipebyId: async (req, res) => {
