@@ -101,10 +101,11 @@ module.exports = {
 
         //obtenemos las preguntas respondidas y luego lo guardo en la bd de preguntas respuestas
             //await db2.collection('PregRpta').insertMany(respuestas); 
-        await db2.collection('PregRpta').insertMany(respuestas,(err, result) => {
+        await db2.collection('PregRpta').insertMany(respuestas, async (err, result) => {
             if (err) throw err;
             console.log("Datos insertados");
-            res.json("Insertado");
+            const pgtas = await db2.collection('PregRpta').find().toArray();
+            res.json(pgtas);
         }); 
 
 
@@ -113,7 +114,7 @@ module.exports = {
         await db.collection('nuevaspreguntas').deleteMany((err, obj) => {
             if (err) throw err;
             console.log("Datos borrados")
-            res.json("Borrados");
+            //res.json("Borrados");
         });
         console.log("datos respondidos y eliminados");
     },

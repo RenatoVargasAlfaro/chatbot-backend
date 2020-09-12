@@ -97,10 +97,11 @@ module.exports = {
             elemento.estado='Entrenado';
         });
 
-        await db.collection('PregRpta').insertMany(preguntas, (err, result) => {
+        await db.collection('PregRpta').insertMany(preguntas, async (err, result) => {
             if (err) throw err;
             console.log("datos agregados");
-            res.json(result.ops[0]);
+            const pgtas = await db.collection('PregRpta').find().toArray();
+            res.json(pgtas);
         });
 
 //----------------------------------------------------------------
