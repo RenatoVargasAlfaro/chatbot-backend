@@ -129,7 +129,7 @@ module.exports = {
         //const cultura = await db.collection('paciente').find({_id: ObjectID(dato)}).toArray();
         //res.json(cultura);
         //console.log("Dato por id obtenido");
-        await db.collection('paciente').find({dni: parseInt(dato)}).toArray((err, result) => {
+        await db.collection('paciente').find({dni: dato}).toArray((err, result) => {
             if (err) throw err;
             console.log("Dato por dni obtenido");
             res.json(result);
