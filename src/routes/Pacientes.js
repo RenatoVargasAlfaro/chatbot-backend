@@ -20,6 +20,8 @@ router.get('/email/:email', authentication.isAuth, controller.getPacientsbyEmail
 
 router.get('/title', authentication.isAuth, controller.getPacientsString);
 
+router.get('/dni/:dni', authentication.isAuth, controller.getPacientsbyDni);
+
 
 /*
 router.get('/', async (req, res) => {

@@ -21,26 +21,19 @@ async function signin(req, res) {
             });
         } else {
             let perfil = {
-                token: jwt.createUserToken(user[0]),
-                /*token: jwt.createUserToken({
-                    nombre: user.nombre,
-                    apellidoPaterno: user.apellidoPaterno,
-                    apellidoMaterno: user.apellidoMaterno,
-                    dni: user.dni,
-                    edad: user.edad,
-                    fechaNacimiento: user.fechaNacimiento,
-                    estadoCivil: user.estadoCivil,
-                    numeroHistorial: user.numeroHistorial,
-                    duracionTratamiento: user.duracionTratamiento,
-                    periodo: user.periodo,
-                    date: user.date,
-                    idMedicoCabecera: user.idMedicoCabecera,
-                    idReceta: user.idReceta,
-                    correo: user.correo,
-                    contrasenia: user.contrasenia,
-                    rol: user.rol,
-                    fechaRegistro: new Date()
-                }),*/
+                //token: jwt.createUserToken(user[0]),
+                token: jwt.createUserToken({
+                    _id: user[0]._id,
+                    dni: user[0].dni,
+                    nombres: user[0].nombres,
+                    apellidos: user[0].apellidos,                  
+                    fechaNacimiento: user[0].fechaNacimiento,
+                    telefono: user[0].telefono,
+                    correo: user[0].correo,
+                    enfermedad: user[0].enfermedad,
+                    estado: user[0].estado,
+                    rol: user[0].rol
+                }),
                 user: user[0]
             }
              res.status(200).json(perfil);

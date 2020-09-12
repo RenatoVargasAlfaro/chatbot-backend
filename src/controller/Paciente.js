@@ -123,4 +123,16 @@ module.exports = {
             res.json(result);
         });
     },
+    getPacientsbyDni: async (req, res) => {
+        const db = await connection(); // obtenemos la conexión
+        const dato = req.params.dni; 
+        //const cultura = await db.collection('paciente').find({_id: ObjectID(dato)}).toArray();
+        //res.json(cultura);
+        //console.log("Dato por id obtenido");
+        await db.collection('paciente').find({dni: parseInt(dato)}).toArray((err, result) => {
+            if (err) throw err;
+            console.log("Dato por dni obtenido");
+            res.json(result);
+        });
+    },
 }
