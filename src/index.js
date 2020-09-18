@@ -56,6 +56,7 @@ const route3 = require('./routes/PreguntasRespuestas');
 const route4 = require('./routes/NuevasPreguntas');
 const route5 = require('./routes/Recetas');
 const route6 = require('./routes/Calendario');
+const route7 = require('./routes/Enfermedad');
 const chatbot = require('./routes/chatbotRouter');
 app.use('/auth', authRouter);
 app.use('/Paciente', route);
@@ -64,6 +65,7 @@ app.use('/Pregunta', route3);
 app.use('/NPregunta', route4);
 app.use('/Receta', route5);
 app.use('/Calendario', route6);
+app.use('/Enfermedad', route7);
 app.use('/chatbot', chatbot);
 
 // static files
