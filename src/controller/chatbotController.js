@@ -290,14 +290,14 @@ async function updateIntent(intent) {
 async function createIntent(req,res) {
 	try {
 
-		var en = req.body.enfermedad;
+		var enfermedad = req.body.enfermedad;
 		var nombre = req.body.nombre;
-		var desc = req.body.desc;
-		var pgta = req.body.pgta;
-		var rpta = req.body.rpta;
-		const displayName = 'Welcome Intent -' + en;
-		const displayName2 = 'Discomfort Intent - ' + en;
-		const displayName3 = 'Discomfort Fallback Intent - ' + en;
+		var descripcion = req.body.descripcion;
+		var consulta = req.body.consulta;
+		var respuestas = req.body.respuestas;
+		const displayName = 'Welcome Intent -' + enfermedad;
+		const displayName2 = 'Discomfort Intent - ' + enfermedad;
+		const displayName3 = 'Discomfort Fallback Intent - ' + enfermedad;
 
 		const chatbot = new clasedialog.DialogFlow(clasedialog.projectId)
 		const agentPath = chatbot.intentsClient.projectAgentPath(chatbot.projectId);
@@ -305,8 +305,8 @@ async function createIntent(req,res) {
 
 		/*-------------------------------INTENCION BIENVENIDA-------------------------------------------*/
 
-		const trainingPhrasesParts1 = ['Hola ' + en,'Hi ' + en];
-		const messageTexts1 = ['Hola soy ' + nombre, ' ¿En que puedo ayudarte?'];
+		const trainingPhrasesParts1 = ['Hola ' + enfermedad,'Hi ' + enfermedad];
+		const messageTexts1 = ['Hola soy ' + nombre + ' ¿En que puedo ayudarte?'];
 
 		const trainingPhrases1 = [];
 
@@ -334,7 +334,7 @@ async function createIntent(req,res) {
 
 		const outputContexts1 = [
 			{
-			  name : 'projects/oftalbot-rsd9/agent/sessions/-/contexts/Saludo' + en,
+			  name : 'projects/oftalbot-rsd9/agent/sessions/-/contexts/Saludo' + enfermedad,
 			  lifespanCount : 1,
 			}
 		]
@@ -352,8 +352,12 @@ async function createIntent(req,res) {
 
 
 		/*-------------------------INTENCION DEL SINTOMA----------------------------*/
-		const trainingPhrasesParts2 = [pgta];
-		const messageTexts2 = [rpta];
+		const trainingPhrasesParts2 = [consulta];
+		var rptas =[]
+		respuestas.forEach(e => {
+			rptas.push(e.text)
+		})
+		const messageTexts2 = [rptas];
 
 		const trainingPhrases2 = [];
 
@@ -380,7 +384,7 @@ async function createIntent(req,res) {
 		};
 
 
-		const inputcontext2 = ['projects/oftalbot-rsd9/agent/sessions/-/contexts/Saludo' + en];
+		const inputcontext2 = ['projects/oftalbot-rsd9/agent/sessions/-/contexts/Saludo' + enfermedad];
 
 		const outputContexts2 = [
 			{
@@ -412,11 +416,11 @@ async function createIntent(req,res) {
 		const message3 = {
 			text: messageText3,
 		};
-		const inputcontext3 = ['projects/oftalbot-rsd9/agent/sessions/-/contexts/Saludo' + en];
+		const inputcontext3 = ['projects/oftalbot-rsd9/agent/sessions/-/contexts/Saludo' + enfermedad];
 
 		const outputContexts3 = [
 			{
-			  name : 'projects/oftalbot-rsd9/agent/sessions/-/contexts/Saludo' + en,
+			  name : 'projects/oftalbot-rsd9/agent/sessions/-/contexts/Saludo' + enfermedad,
 			  lifespanCount : 1,
 			}
 		]
@@ -462,8 +466,8 @@ async function createIntent(req,res) {
 			const db = await connection2(); // obtenemos la conexión
 			const newBot = {
 				nombre: nombre,
-				enfermedad: en,
-				desc: desc,
+				enfermedad: enfermedad,
+				descripcion: descripcion,
 				intencion1: displayName,
 				intencion2: displayName2,
 				intencion: displayName3,
