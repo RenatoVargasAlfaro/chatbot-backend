@@ -38,6 +38,7 @@ async function getChatbot(req, res) {
 				respuesta = await chatbot.sessionClient.detectIntent(request)
 				console.log('DialogFlow.sendTextMessageToDialogFlow: Detected intent');
 				console.log(respuesta[0].queryResult.fulfillmentText)
+				let en = decoded.enfermedad.toUpperCase();
 
 				var arreglo = ["dolor en la frente", "dolor de frente", "dolor", "frente", "frente dolor", "fastidio en la frente", "fastidia la frente",
 								"molestia en la frente", "molestia la frente", "duele la frente", "duele mi frente", "dolor en mi frente", "mi frente", "duele",
@@ -46,30 +47,31 @@ async function getChatbot(req, res) {
 								"no veo bien", "veo nublado", "no veo correctamente", "vision nublada", "molestia en el ojo", "dolor en el ojo", "dolor de ojo",
 								"incomodidad en mi frente", "incomodidad en la frente", "frente con incomodidad", "incomodidad en el ojo", "ojo incomodo",
 								"incomodidad en mi ojo", "malestar en mi frente", "malestar en la frente", "malestar en el ojo", "malestar en mi ojo"]
-				
 				var band = false;
 
-				if (respuesta[0].queryResult.fulfillmentText=="No comprendo lo consultado, ¿Podrías repetirlo?"){
-					arreglo.forEach((e, i) => {
-						if(request.queryInput.text.text.includes(e)){
-							respuesta[0].queryResult.fulfillmentText="No tengo la respuesta ahora, pero indagaré para responderte luego"
-							band=true
+				if (en == 'GLAUCOMA'){
+					if (respuesta[0].queryResult.fulfillmentText=="No comprendo lo consultado, ¿Podrías repetirlo?"){
+						arreglo.forEach((e, i) => {
+							if(request.queryInput.text.text.includes(e)){
+								respuesta[0].queryResult.fulfillmentText="No tengo la respuesta ahora, pero indagaré para responderte luego"
+								band=true
+							}
+						})
+						if(band){
+							const npregunta = {
+								"consulta": request.queryInput.text.text,
+								"enfermedad": "Glaucoma",
+								"intencion": "Consulta Malestares",
+								"estado": "Nuevo",
+								"respuestas": []
+							}
+							const db = await connection(); // obtenemos la conexión
+							await db.collection('nuevaspreguntas').insertOne(npregunta, (err, res) => {
+								if (err) throw err;
+								console.log("dato agregado");
+								//res.json("Agregado");
+							});
 						}
-					})
-					if(band){
-						const npregunta = {
-							"consulta": request.queryInput.text.text,
-							"enfermedad": "Glaucoma",
-							"intencion": "Consulta Malestares",
-							"estado": "Nuevo",
-							"respuestas": []
-						}
-						const db = await connection(); // obtenemos la conexión
-						await db.collection('nuevaspreguntas').insertOne(npregunta, (err, res) => {
-							if (err) throw err;
-							console.log("dato agregado");
-							//res.json("Agregado");
-						});
 					}
 				}
 				
