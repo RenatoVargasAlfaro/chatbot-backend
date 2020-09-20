@@ -357,7 +357,7 @@ async function createIntent(req,res) {
 		respuestas.forEach(e => {
 			rptas.push(e.text)
 		})
-		const messageTexts2 = [rptas];
+		const messageTexts2 = rptas;
 
 		const trainingPhrases2 = [];
 
