@@ -79,7 +79,7 @@ module.exports = {
         await db.collection('Receta').insertOne(rec, (err, result) => {
             if (err) throw err;
             console.log("dato agregado");
-            res.json("Agregado");
+            res.json(rec);
         });
     },
     deleteRecipe: async (req, res) => {

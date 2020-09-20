@@ -24,7 +24,7 @@ module.exports = {
         await db.collection('calendario').insertOne(cultura, (err, result) => {
             if (err) throw err;
             console.log("dato agregado");
-            res.json("Agregado");
+            res.json(cultura);
         });
     },
     deleteCalendar: async (req, res) => {

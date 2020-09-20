@@ -32,7 +32,7 @@ module.exports = {
             await db.collection('paciente').insertOne(paciente, (err, result) => {
                 if (err) throw err;
                 console.log("dato agregado");
-                res.json("Agregado");
+                res.json(paciente);
             });
         } else {
             res.json({
