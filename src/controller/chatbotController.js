@@ -68,7 +68,7 @@ async function getChatbot(req, res) {
 						await db.collection('nuevaspreguntas').insertOne(npregunta, (err, res) => {
 							if (err) throw err;
 							console.log("dato agregado");
-							res.json("Agregado");
+							//res.json("Agregado");
 						});
 					}
 				}
