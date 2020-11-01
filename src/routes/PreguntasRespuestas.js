@@ -12,6 +12,8 @@ router.post('/add', authentication.isAuth, controller.addQuestion);
 
 router.delete('/delete/:id', authentication.isAuth, controller.deleteQuestion);
 
+router.delete('/newdelete/:id', authentication.isAuth, controller.deleteNewQuestion);
+
 router.put('/update/:id', authentication.isAuth, controller.updateQuestion);
 
 router.get('/edit/:id', authentication.isAuth, controller.getQuestionbyId);
