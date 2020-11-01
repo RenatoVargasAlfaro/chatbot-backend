@@ -390,7 +390,7 @@ async function createIntent(req,res) {
 
 		const outputContexts2 = [
 			{
-			  name : 'projects/oftalbot-rsd9/agent/sessions/-/contexts/Receta',
+			  name : 'projects/oftalbot-rsd9/agent/sessions/-/contexts/Final',
 			  lifespanCount : 1,
 			}
 		]
