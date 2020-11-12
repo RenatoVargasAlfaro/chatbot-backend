@@ -44,7 +44,14 @@ module.exports = {
         var arreglo =[]
         respuestas.forEach((elemento, index) => {
             if(elemento.estado!='Entrenado'){
-                arreglo.push(elemento)
+                modelopregunta = {
+                    consulta: elemento.consulta,
+                    enfermedad: elemento.enfermedad,
+                    intencion: elemento.intencion,
+                    estado: elemento.estado,
+                    respuestas: elemento.respuestas
+                }
+                arreglo.push(modelopregunta)
             }
         });
         respuestas=arreglo
