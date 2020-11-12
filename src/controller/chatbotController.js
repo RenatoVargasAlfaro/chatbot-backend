@@ -19,10 +19,10 @@ async function buscarconsulta(consulta) {
 	var arreglo = pgtas1.concat(pgtas2);
 	var temp = []
 	arreglo.forEach(e => {
-		temp.push(e.consulta)
+		temp.push(e.consulta.toUpperCase())
 	})
 
-	var similarity2 = stringSimilarity.findBestMatch(consulta, temp);
+	var similarity2 = stringSimilarity.findBestMatch(consulta.toUpperCase(), temp);
 
 	if (similarity2.bestMatch.rating >= 0.5) {
 		return arreglo[similarity2.bestMatchIndex].respuestas;
@@ -133,7 +133,7 @@ async function getChatbot(req, res) {
 					//para que el buscar en la bd solo funcione para la intencion de sintomas y su bucle
 					if (respuesta[0].queryResult.intent.displayName != frase &&
 						respuesta[0].queryResult.intent.displayName != 'Discomfort Fallback Intent') {
-
+							//comentario
 					} else {
 
 
@@ -160,11 +160,11 @@ async function getChatbot(req, res) {
 
 
 							//para estar seguros de que no es un sintoma, sino basurita o nueva pregunta
-							if (respuesta[0].queryResult.intent.displayName == 'Discomfort Fallback Intent') {
+							if (respuesta[0].queryResult.intent.displayName == 'Discomfort Fallback Intent'
+								|| respuesta[0].queryResult.intent.displayName == frase) {
 
 								//if (respuesta[0].queryResult.fulfillmentText=="No comprendo lo consultado, ¿Podrías repetirlo?"){
 								arreglo.forEach((e, i) => {
-									console.log()
 									if (request.queryInput.text.text.includes(e)) {
 										respuesta[0].queryResult.fulfillmentText = "No tengo la respuesta ahora, pero indagaré para responderte luego."
 										band = true
