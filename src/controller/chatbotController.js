@@ -22,8 +22,6 @@ async function buscarconsulta(consulta) {
 			temp.push(limpiarcadena(e.consulta).toUpperCase())
 	})
 
-	console.log("-------", temp)
-
 	var similarity2 = stringSimilarity.findBestMatch(consulta.toUpperCase(), temp);
 
 	if (similarity2.bestMatch.rating >= 0.5) {
