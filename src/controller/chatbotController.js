@@ -19,7 +19,9 @@ async function buscarconsulta(consulta) {
 	var arreglo = pgtas1.concat(pgtas2);
 	var temp = []
 	arreglo.forEach(e => {
-		temp.push(e.consulta.toUpperCase())
+		if(e.intencion=='Consulta Malestares'){
+			temp.push(limpiarcadena(e.consulta).toUpperCase())
+		}
 	})
 
 	var similarity2 = stringSimilarity.findBestMatch(consulta.toUpperCase(), temp);
@@ -30,6 +32,33 @@ async function buscarconsulta(consulta) {
 	}
 
 }
+
+function limpiarcadena(cadena){
+	// Definimos los caracteres que queremos eliminar
+	var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+ 
+	// Los eliminamos todos
+	for (var i = 0; i < specialChars.length; i++) {
+		cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+	}   
+ 
+	// Lo queremos devolver limpio en minusculas
+	cadena = cadena.toLowerCase();
+ 
+	// Quitamos espacios y los sustituimos por _ porque nos gusta mas asi
+	//cadena = cadena.replace(/ /g,"_");
+ 
+	// Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+	cadena = cadena.replace(/á/gi,"a");
+	cadena = cadena.replace(/é/gi,"e");
+	cadena = cadena.replace(/í/gi,"i");
+	cadena = cadena.replace(/ó/gi,"o");
+	cadena = cadena.replace(/ú/gi,"u");
+	cadena = cadena.replace(/ñ/gi,"n");
+	return cadena;
+ }
+
+
 
 
 async function getChatbot(req, res) {
@@ -45,18 +74,20 @@ async function getChatbot(req, res) {
 			console.log(decoded)
 			//console.log(sessionId)
 			var textMessage = req.body.mensaje
+			var entrada = req.body.mensaje
+
+			//limpiar la cadena de tildes y caracteres especiales
+			textMessage = limpiarcadena(textMessage);
+			//console.log("cadena limpiada", textMessage)
 
 			//obtengo la enfermedad del paciente
 			let en = decoded.enfermedad.toUpperCase();
 
+
 			//------------------MANEJO DEL HOLA, SI Y NO EN EL CHATBOT 
 
-			var arreglo1 = ['HOLA', 'HI', 'HELLO', 'HOLAA', 'HOOLA', 'HELLOOO', 'HOL', 'HEY',
-				'HEEY', 'HOLA, COMO ESTAS?', 'HIII', 'HELL', 'HEEELL', 'HEEELLO',
-				'HOOOLA, COOMOOO ESTAAAS?', 'HOOOLAAAA', 'HOOLAA', 'HOLA CAUSA',
-				'HOLA BATERIA', 'HOLA A LOS AÑOS', 'HOLAA CAUSAA', 'HOLAA A LOS AÑOOS', 'HOLAA BATERIA',
-				'HOLA MANO', 'HOLA MANITO', 'HOLA PRRO', 'HOLA PERRO', 'HOLAA MANOO',
-				'HOLAA MANITOO', 'HOOLA PRROO', 'HOLAA PERRO']
+			var arreglo1 = ['HOLA', 'HI', 'HELLO', 'HEY', 'HOLAA', 'HELLOO',
+				'HEEY', 'HOLA, COMO ESTAS?']
 			var similarity1 = stringSimilarity.findBestMatch(textMessage.toUpperCase(), arreglo1);
 
 			if (similarity1.bestMatch.rating >= 0.5) {
@@ -65,11 +96,7 @@ async function getChatbot(req, res) {
 
 			//---------------------------------------
 
-			var arreglo2 = ['NO', 'NOT', 'NEL', 'NEL PERRO', 'NEL PRRO', 'NADA', 'NO QUIERO', 'NOOP', 'NOP', 'AEA', 'AEA MANO', 'NO PE', 'NO FASTIDIES', 'NO FRIEGUES', 'NOOO', 'NO QUIERO',
-				'NOOT', 'NAADAA', 'NEGATIVO', 'NEGATIVOOOOO', 'NEEEL', 'NEEL PERRO', 'NOO QUIEROO',
-				'NADAAA', 'NADA NADA', 'NOO PEEE', 'AEA MONGOL', 'AEAAAA', 'NOO FASTIDIIES',
-				'NOO FRIGUES', 'NADA PAPI', 'NAADA PAPI', 'NO MANO', 'NADA MANO', 'NADA MANITO',
-				'NADA PRRO', 'NADA PERRO', 'NO CAUSA', 'NADA CAUSA', 'NEL MANO', 'NEL CAUSA']
+			var arreglo2 = ['NO', 'NOT', 'NEL', 'NADA', 'NO QUIERO', 'NO FASTIDIES', 'NEGATIVO', 'NO GRACIAS']
 			var similarity2 = stringSimilarity.findBestMatch(textMessage.toUpperCase(), arreglo2);
 
 			if (similarity2.bestMatch.rating >= 0.5) {
@@ -79,12 +106,8 @@ async function getChatbot(req, res) {
 
 			//---------------------------------------
 
-			var arreglo3 = ['SI', 'YES', 'OK', 'SI PERRO', 'SI PRRO', 'OKI', 'OKI DOKI', 'SIIIIP', 'SIIP',
-				'CLARO', 'CLARO MANO', 'CLARO PE MANO', 'CLARO MANITO', 'CLARO PE MANITO', 'AFIRMATIVO',
-				'SI GRACIAS', 'SI POR FAVOR', 'PUEDE SER', 'SII', 'YEES', 'OOOK', 'OKIII', 'OKII DOKII',
-				'CLARIN', 'CLAROOO', 'CLARINETE', 'SII PERRO', 'SII PRRO', 'CLAROO MANO', 'CLAROOO PE MANOO',
-				'CLAROOO MANITO', 'CLAROO, PE MANITO', 'AFIRMATIVOOO', 'CLARIN MANO', 'CLARINETE MANITO',
-				'CLARO PAPI', 'CLARIN PAPI', 'CLARINETEE PAPI', 'SII GRACIIAS', 'SII POR FAVOOR', 'PUEEDEE SER']
+			var arreglo3 = ['SI', 'YES', 'OK', 'OKI', 'OKI DOKI', 'CLARO', 'AFIRMATIVO', 
+				'SI GRACIAS', 'SI POR FAVOR']
 			var similarity3 = stringSimilarity.findBestMatch(textMessage.toUpperCase(), arreglo3);
 
 			if (similarity3.bestMatch.rating >= 0.5) {
@@ -164,15 +187,16 @@ async function getChatbot(req, res) {
 								|| respuesta[0].queryResult.intent.displayName == frase) {
 
 								//if (respuesta[0].queryResult.fulfillmentText=="No comprendo lo consultado, ¿Podrías repetirlo?"){
+								//console.log("es la nueva:", request.queryInput.text.text)
 								arreglo.forEach((e, i) => {
-									if (request.queryInput.text.text.includes(e)) {
+									if (textMessage.toUpperCase().includes(e.toUpperCase())) {
 										respuesta[0].queryResult.fulfillmentText = "No tengo la respuesta ahora, pero indagaré para responderte luego."
 										band = true
 									}
 								})
 								if (band) {
 									const npregunta = {
-										"consulta": request.queryInput.text.text,
+										"consulta": entrada,
 										"enfermedad": "Glaucoma",
 										"intencion": "Consulta Malestares",
 										"estado": "Nuevo",
@@ -426,8 +450,7 @@ async function updateIntent(intent) {
 
 async function createIntent(req, res) {
 	try {
-
-		var enfermedad = req.body.enfermedad.toUpperCase();
+		var enfermedad = limpiarcadena(req.body.enfermedad).toUpperCase();
 		var nombre = req.body.nombre;
 		var descripcion = req.body.descripcion;
 		var consulta = req.body.consulta;
@@ -781,13 +804,6 @@ async function createIntent(req, res) {
 			parent: agentPath,
 			intent: intent7,
 		};
-
-
-
-
-
-
-
 
 
 
