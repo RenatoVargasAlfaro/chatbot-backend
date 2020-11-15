@@ -14,15 +14,15 @@ const { ObjectID } = require('mongodb');
 async function buscarconsulta(consulta) {
 
 	const db3 = await connection3(); // obtenemos la conexión
-	const pgtas1 = await db3.collection('PregRpta').find().toArray();
-	const pgtas2 = await db3.collection('temporal').find().toArray();
+	const pgtas1 = await db3.collection('PregRpta').find({ intencion: 'Consulta Malestares' }).toArray();
+	const pgtas2 = await db3.collection('temporal').find({ intencion: 'Consulta Malestares' }).toArray();
 	var arreglo = pgtas1.concat(pgtas2);
 	var temp = []
 	arreglo.forEach(e => {
-		if(e.intencion=='Consulta Malestares'){
 			temp.push(limpiarcadena(e.consulta).toUpperCase())
-		}
 	})
+
+	console.log("-------", temp)
 
 	var similarity2 = stringSimilarity.findBestMatch(consulta.toUpperCase(), temp);
 
