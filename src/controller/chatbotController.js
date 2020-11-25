@@ -18,15 +18,20 @@ async function buscarconsulta(consulta) {
 	const pgtas2 = await db3.collection('temporal').find({ intencion: 'Consulta Malestares' }).toArray();
 	var arreglo = pgtas1.concat(pgtas2);
 	var temp = []
-	arreglo.forEach(e => {
-			temp.push(limpiarcadena(e.consulta).toUpperCase())
-	})
 
-	var similarity2 = stringSimilarity.findBestMatch(consulta.toUpperCase(), temp);
+	if(arreglo.length != 0) {
+		
+		arreglo.forEach(e => {
+				temp.push(limpiarcadena(e.consulta).toUpperCase())
+		})
 
-	if (similarity2.bestMatch.rating >= 0.5) {
-		return arreglo[similarity2.bestMatchIndex].respuestas;
-		//console.log(arreglo[similarity2.bestMatchIndex].respuestas);
+		var similarity2 = stringSimilarity.findBestMatch(consulta.toUpperCase(), temp);
+
+		if (similarity2.bestMatch.rating >= 0.5) {
+			return arreglo[similarity2.bestMatchIndex].respuestas;
+			//console.log(arreglo[similarity2.bestMatchIndex].respuestas);
+		}
+
 	}
 
 }
