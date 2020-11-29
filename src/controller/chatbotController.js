@@ -141,18 +141,29 @@ async function getChatbot(req, res) {
 				//lo comentamos un ratito
 				//let en = decoded.enfermedad.toUpperCase();
 
-				var arreglo = ["dolor en la frente", "dolor de frente", "dolor", "frente", "frente dolor", "fastidio en la frente", "fastidia la frente",
-					"molestia en la frente", "molestia la frente", "duele la frente", "duele mi frente", "dolor en mi frente", "mi frente", "duele",
-					"incomodidad en la frente", "molestia en la frente", "molestia en frente", "molestia frente", "ojo enrojecido", "enrojecimiento de ojo",
-					"ojo rojo", "rojo", "vision borrosa", "borrosa vision", "vision algo borrosa", "borrosa", "vision", "molestia ojo", "borrosa mi vision",
-					"no veo bien", "veo nublado", "no veo correctamente", "vision nublada", "molestia en el ojo", "dolor en el ojo", "dolor de ojo",
-					"incomodidad en mi frente", "incomodidad en la frente", "frente con incomodidad", "incomodidad en el ojo", "ojo incomodo",
-					"incomodidad en mi ojo", "malestar en mi frente", "malestar en la frente", "malestar en el ojo", "malestar en mi ojo"]
+				var arreglo = ["vision opaca", "opaca vision", "vision", "opaca", "tengo vision opaca", "vision tenue", "tengo vision tenue", "vision borrosa", 
+								"borrosa vision", "borrosa mi vision", "tenue", "tenue mi vision", "opaca mi vision", "colores", "aumento mi miopia",
+								"aumento mi hipermetropia", "aumento", "miopia", "hipermetropia", "ha aumentado mi miopia", "ha aumentado mi hipermetropia",
+								"vision algo borrosa", "borrosa", "vision", "opaca vision", "tenue vision", "vision algo tenue", "vision algo opaca",
+								"no veo de noche", "no veo bien de noche", "de noche no veo bien", "noche no veo bien", "soy sensible a la luz",
+								"tengo mucha sensibilidad a la luz", "luz sensible", "mis ojos son sensible a la luz", "necesito mas luz", 
+								"necesito iluminacion para ver", "necesito iluminacion", "tengo halos en los ojos", "veo halos en los ojos",
+								"halos en el ojo", "ojo con halos", "halos", "veo halos alrededor de las luces", "luces con halos", "cambios de anteojos",
+								"cambios constante de lentes","cambio de lentes seguido", "cambio mucho de lentes", "lentes seguido", "perdida de colores",
+								"estoy perdiendo los colores", "colores perdidos", "vision con menos colores", "menos colores", "pocos colores",			
+								"dolor en la frente", "dolor de frente", "dolor", "frente", "frente dolor", "fastidio en la frente", "fastidia la frente",
+								"molestia en la frente", "molestia la frente", "duele la frente", "duele mi frente", "dolor en mi frente", "mi frente", "duele",
+								"incomodidad en la frente", "molestia en la frente", "molestia en frente", "molestia frente", "ojo enrojecido", "enrojecimiento de ojo",
+								"ojo rojo", "rojo",  "molestia ojo", "no veo bien", "veo nublado", "no veo correctamente", "vision nublada", "molestia en el ojo", 
+								"dolor en el ojo", "dolor de ojo", "incomodidad en mi frente", "incomodidad en la frente", "frente con incomodidad", 
+								"incomodidad en el ojo", "ojo incomodo", "incomodidad en mi ojo", "malestar en mi frente", "malestar en la frente", "malestar en el ojo", "malestar en mi ojo",
+								"veo doble", "doble vision", "veo doble en un ojo", "doble vision en un ojo", "estoy viendo doble en un ojo", "doble", "ojo", "vision doble en un solo ojo",
+								"en un solo ojo tengo doble vision", "no puedo leer", "no leo bien", "leo mal", "no reconozco caras", "caras no reconozco", "veo mal las caras"]
 				var band = false;
 				var frase = 'Discomfort Intent' + ' - ' + en
 				var variable = []
 
-				if (en == 'GLAUCOMA') {
+				if (en == 'CATARATAS') {
 
 					frase = 'Discomfort Intent'
 
@@ -200,7 +211,7 @@ async function getChatbot(req, res) {
 								if (band) {
 									const npregunta = {
 										"consulta": entrada,
-										"enfermedad": "Glaucoma",
+										"enfermedad": "Cataratas",
 										"intencion": "Consulta Malestares",
 										"estado": "Nuevo",
 										"respuestas": []
@@ -232,7 +243,7 @@ async function getChatbot(req, res) {
 				if (respuesta[0].queryResult.intent.displayName == frase ||
 					respuesta[0].queryResult.intent.displayName == 'Discomfort Fallback Intent') {
 					if(respuesta[0].queryResult.fulfillmentText != "No comprendo lo consultado, ¿Podrías repetirlo?"){
-						msjuteribot = respuesta[0].queryResult.fulfillmentText + ' ¿Deseas algo más?'
+						msjuteribot = respuesta[0].queryResult.fulfillmentText + ' ¿Deseas algo más? (Si/No)'
 					}
 				}
 
