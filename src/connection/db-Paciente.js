@@ -11,10 +11,11 @@ let client = null
 
 const getPacienteClient = async () => {
   try {
-    if(client) return client
+    if(client && client.isConnected()) return client
     client = await MongoClient.connect(config.URL, {
       useUnifiedTopology: true,
     });
+    
     // const db = calendarioClient.db(dbName);
     return client
   } catch (error) {
