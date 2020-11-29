@@ -22,5 +22,6 @@ const getPacienteClient = async () => {
 };
 
 module.exports = {
-  getPacienteClient
+  getPacienteClient,
+  dbName
 }
