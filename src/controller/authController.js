@@ -1,6 +1,6 @@
 const jwt = require('../services/jwt');
 
-const {getPacienteClient} = require('../connection/db-Paciente');
+const {getPacienteClient, dbName} = require('../connection/db-Paciente');
 
 const {
     ObjectID
@@ -10,7 +10,7 @@ async function signin(req, res) {
     let correo = req.body.correo;
     let contrasenia = req.body.contrasenia;
     const cliente = await getPacienteClient()
-    const db =  cliente.db("Pacienteeeee")
+    const db =  cliente.db(dbName)
     const collection = db.collection('paciente')
     console.log(await collection.find().toArray());
     const access = db.collection('paciente').find({

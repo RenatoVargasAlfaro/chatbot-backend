@@ -7,12 +7,14 @@ const dbName = 'Pacienteeeee';
 
 const config = require('../config/config');
 
+let calendarioClient = null
+
 const getPacienteClient = async () => {
   try {
-    const calendarioClient = await MongoClient.connect(config.URL, {
+    if(calendarioClient) return calendarioClient
+    calendarioClient = await MongoClient.connect(config.URL, {
       useUnifiedTopology: true,
     });
-
     // const db = calendarioClient.db(dbName);
     return calendarioClient
   } catch (error) {
