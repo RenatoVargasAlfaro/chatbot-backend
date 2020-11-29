@@ -1,16 +1,18 @@
 //importamos la conexion
-const connection = require('../connection/db-Paciente');
+const {calendarioClient} = require('../connection/db-Paciente');
 const assert = require('assert');
 const { ObjectID } = require('mongodb');
 
 module.exports = {
     getPacients: async (req, res) => {
-        const db = await connection(); // obtenemos la conexión
+        const client = await calendarioClient()
+        const db = client.db("Pacienteeeee"); // obtenemos la conexión
         //var docs = await db.collection('paciente').find().toArray();
         //res.json(docs);
-        await db.collection('paciente').find().toArray((err, result) => {
+         db.collection('paciente').find().toArray((err, result) => {
             if (err) throw err;
             console.log("datos obtenidos");
+            client.close()
             res.json(result);
         });
     },

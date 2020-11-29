@@ -7,13 +7,20 @@ const dbName = 'Pacienteeeee';
 
 const config = require('../config/config');
 
-const client = new MongoClient(config.URL, {
-  useUnifiedTopology: true
-});
+const getPacienteClient = async () => {
+  try {
+    const calendarioClient = await MongoClient.connect(config.URL, {
+      useUnifiedTopology: true,
+    });
 
-module.exports = async () => {
-  // Conectamos al servidor
-  await client.connect();
-
-  return client.db(dbName); // retornamos la conexión con el nombre de la bd a usar
+    // const db = calendarioClient.db(dbName);
+    return calendarioClient
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
+
+module.exports = {
+  getPacienteClient
+}
