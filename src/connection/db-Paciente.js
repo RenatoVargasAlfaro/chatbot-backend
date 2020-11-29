@@ -7,16 +7,16 @@ const dbName = 'Pacienteeeee';
 
 const config = require('../config/config');
 
-let calendarioClient = null
+let client = null
 
 const getPacienteClient = async () => {
   try {
-    if(calendarioClient) return calendarioClient
-    calendarioClient = await MongoClient.connect(config.URL, {
+    if(client) return client
+    client = await MongoClient.connect(config.URL, {
       useUnifiedTopology: true,
     });
     // const db = calendarioClient.db(dbName);
-    return calendarioClient
+    return client
   } catch (error) {
     console.log(error);
     return null;
