@@ -4,18 +4,22 @@ const jwt = require("jsonwebtoken");
 const { response } = require('express');
 const stringSimilarity = require('string-similarity');
 
-const connection = require('../connection/db-NuevasPreguntas');
-const connection2 = require('../connection/db-Chatbot');
-const connection3 = require('../connection/db-PreguntasRespuestas');
+const { getNuevasClient, dbName } = require('../connection/db-NuevasPreguntas');
+const { getChatbotClient, dbName3 } = require('../connection/db-Chatbot');
+const { getPreguntaClient, dbName2 } = require('../connection/db-PreguntasRespuestas');
 
 const { ObjectID } = require('mongodb');
 
 
 async function buscarconsulta(consulta) {
 
-	const db3 = await connection3(); // obtenemos la conexión
+	const client = await getPreguntaClient();
+    const db3 = client.db(dbName2); // obtenemos la conexión
+	
+	//const db3 = await connection3(); // obtenemos la conexión
 	const pgtas1 = await db3.collection('PregRpta').find({ intencion: 'Consulta Malestares' }).toArray();
 	const pgtas2 = await db3.collection('temporal').find({ intencion: 'Consulta Malestares' }).toArray();
+	client.close();
 	var arreglo = pgtas1.concat(pgtas2);
 	var temp = []
 
@@ -216,8 +220,13 @@ async function getChatbot(req, res) {
 										"estado": "Nuevo",
 										"respuestas": []
 									}
-									const db = await connection(); // obtenemos la conexión
+									
+									const client = await getNuevasClient();
+    								const db = client.db(dbName); // obtenemos la conexión
+									
+									//const db = await connection(); // obtenemos la conexión
 									await db.collection('nuevaspreguntas').insertOne(npregunta, (err, res) => {
+										client.close();
 										if (err) throw err;
 										console.log("dato agregado");
 										//res.json("Agregado");
@@ -862,7 +871,10 @@ async function createIntent(req, res) {
 			console.log("----------------------------------------------")
 			console.log(response7);
 
-			const db = await connection2(); // obtenemos la conexión
+			const client = await getChatbotClient();
+    		const db = client.db(dbName3); // obtenemos la conexión
+			
+			//const db = await connection2(); // obtenemos la conexión
 			const newBot = {
 				nombre: nombre,
 				enfermedad: enfermedad,
@@ -883,6 +895,7 @@ async function createIntent(req, res) {
 				id7: response7.name,
 			}
 			await db.collection('chatbot').insertOne(newBot, (err, result) => {
+				client.close();
 				if (err) throw err;
 				console.log("chatbot agregado");
 				//res.json("Agregado");
@@ -926,7 +939,10 @@ async function deleteIntents(req, res) {
 	const agentPath = chatbot.intentsClient.projectAgentPath(chatbot.projectId);
 	//console.log(agentPath);
 
-	const db = await connection2(); // obtenemos la conexión
+	const client = await getChatbotClient();
+    const db = client.db(dbName3); // obtenemos la conexión
+	
+	//const db = await connection2(); // obtenemos la conexión
 	const dato = req.params.id;
 
 
@@ -995,6 +1011,7 @@ async function deleteIntents(req, res) {
 	await db.collection('chatbot').deleteOne({
 		_id: ObjectID(dato)
 	}, (err, obj) => {
+		client.close();
 		if (err) throw err;
 		console.log("Dato borrado");
 		res.json("Borrado");
@@ -1006,10 +1023,14 @@ async function deleteIntents(req, res) {
 
 
 async function getIntents(req, res) {
-	const db = await connection2(); // obtenemos la conexión
+	const client = await getChatbotClient();
+    const db = client.db(dbName3); // obtenemos la conexión
+	
+	//const db = await connection2(); // obtenemos la conexión
 	//var docs = await db.collection('cultura').find().toArray();
 	//res.json(docs);
 	await db.collection('chatbot').find().toArray((err, result) => {
+		client.close();
 		if (err) throw err;
 		console.log("datos obtenidos");
 		res.json(result);

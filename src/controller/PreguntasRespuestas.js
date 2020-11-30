@@ -1,5 +1,5 @@
 //importamos la conexion
-const connection = require('../connection/db-PreguntasRespuestas');
+const { getPreguntaClient, dbName2 } = require('../connection/db-PreguntasRespuestas');
 const assert = require('assert');
 const { ObjectID } = require('mongodb');
 
@@ -7,11 +7,16 @@ const chatbotController = require('./chatbotController');
 
 module.exports = {
     getQuestion: async (req, res) => {
-        const db = await connection(); // obtenemos la conexión
+        
+        const client = await getPreguntaClient();
+        const db = client.db(dbName2); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         //var docs = await db.collection('PregRpta').find().toArray();
         //res.json(docs);
         const pgtas1 = await db.collection('PregRpta').find().toArray();
         const pgtas2 = await db.collection('temporal').find().toArray();
+        client.close();
         var arreglo = pgtas1.concat(pgtas2);
         res.json(arreglo);
         /*
@@ -23,7 +28,11 @@ module.exports = {
     },
     addQuestion: async (req, res) => {
         var preguntas = Array.from(req.body); //se usa esto para volverlo array
-        const db = await connection(); // obtenemos la conexión
+        
+        const client = await getPreguntaClient();
+        const db = client.db(dbName2); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         //await db.collection('cultura').save(cultura);
         //await db.collection('PregRpta').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
@@ -36,6 +45,7 @@ module.exports = {
                 if (err) throw err;
                 console.log("datos agregados");
                 const pgtas = await db.collection('temporal').find().toArray();
+                client.close();
                 res.json(pgtas);
             });
         } else {
@@ -151,6 +161,7 @@ module.exports = {
                 if (err) throw err;
                 console.log("datos agregados");
                 const pgtas = await db.collection('PregRpta').find().toArray();
+                client.close();
                 res.json(pgtas);
             });
 
@@ -201,7 +212,11 @@ module.exports = {
     },
     deleteQuestion: async (req, res) => {
         const dato = req.params.id;
-        const db = await connection(); // obtenemos la conexión
+        
+        const client = await getPreguntaClient();
+        const db = client.db(dbName2); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         /*await db.collection('cultura').remove({
             _id: id
         });*/
@@ -213,6 +228,7 @@ module.exports = {
             //id: parseInt(dato) //como ya no es un id de mongo, se pasa asi como numero
             _id: ObjectID(dato)
         }, (err, obj) => {
+            client.close();
             if (err) throw err;
             console.log("Dato borrado");
             res.json("Borrado");
@@ -220,7 +236,11 @@ module.exports = {
     },
     deleteNewQuestion: async (req, res) => {
         const dato = req.params.id;
-        const db = await connection(); // obtenemos la conexión
+        
+        const client = await getPreguntaClient();
+        const db = client.db(dbName2); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         /*await db.collection('cultura').remove({
             _id: id
         });*/
@@ -232,6 +252,7 @@ module.exports = {
             //id: parseInt(dato) //como ya no es un id de mongo, se pasa asi como numero
             _id: ObjectID(dato)
         }, (err, obj) => {
+            client.close();
             if (err) throw err;
             console.log("Dato borrado");
             res.json("Borrado");
@@ -242,7 +263,11 @@ module.exports = {
         //obtiene los datos a actualizar
         //const nuevoDato = req.body;
         const nuevoDato = { $set: req.body };
-        const db = await connection(); // obtenemos la conexión
+        
+        const client = await getPreguntaClient();
+        const db = client.db(dbName2); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         /*await db.collection('PregRpta').updateOne({
             _id: ObjectID(dato)
         }, nuevoDato);
@@ -253,16 +278,22 @@ module.exports = {
             if (err) throw err;
             console.log("Dato actualizado");
             const actualizado = await db.collection('PregRpta').find({ id: parseInt(dato) }).toArray();
+            client.close();
             res.json(actualizado);
         });
     },
     getQuestionbyId: async (req, res) => {
-        const db = await connection(); // obtenemos la conexión
+        const client = await getPreguntaClient();
+        const db = client.db(dbName2); // obtenemos la conexión
+        
+        
+        //const db = await connection(); // obtenemos la conexión
         const dato = req.params.id;
         //const cultura = await db.collection('PregRpta').find({_id: ObjectID(dato)}).toArray();
         //res.json(cultura);
         //console.log("Dato por id obtenido");
         await db.collection('PregRpta').find({ id: parseInt(dato) }).toArray((err, result) => {
+            client.close();
             if (err) throw err;
             console.log("Dato por id obtenido");
             res.json(result);

@@ -7,7 +7,32 @@ const dbName = 'Recetaaas';
 
 const config = require('../config/config');
 
-const client = new MongoClient(config.URL, {
+let client = null
+
+const getRecetasClient = async () => {
+  try {
+    if(client && client.isConnected()) return client
+    client = await MongoClient.connect(config.URL, {
+      useUnifiedTopology: true,
+    });
+    
+    // const db = calendarioClient.db(dbName);
+    return client
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+module.exports = {
+  getRecetasClient,
+  dbName
+}
+
+
+
+
+/*const client = new MongoClient(config.URL, {
   useUnifiedTopology: true
 });
 
@@ -16,4 +41,4 @@ module.exports = async () => {
   await client.connect();
 
   return client.db(dbName); // retornamos la conexión con el nombre de la bd a usar
-};
+};*/

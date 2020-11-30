@@ -9,9 +9,7 @@ module.exports = {
     const db = client.db(dbName); // obtenemos la conexión
     //var docs = await db.collection('paciente').find().toArray();
     //res.json(docs);
-    db.collection("paciente")
-      .find()
-      .toArray((err, result) => {
+    db.collection("paciente").find().toArray((err, result) => {
         client.close();
         if (err) throw err;
         console.log("datos obtenidos");
@@ -126,7 +124,10 @@ module.exports = {
     const tokens = nombre.split("$20");
     const frase = tokens.join(" ");
 
-    const db = await connection(); // obtenemos la conexión
+    const client = await getPacienteClient();
+    const db = client.db(dbName); // obtenemos la conexión
+    
+    //const db = await connection(); // obtenemos la conexión
     //var docs = await db.collection('paciente').find().toArray();
     //res.json(docs);
     await db
@@ -141,7 +142,10 @@ module.exports = {
   },
 
   getPacientsbyEmail: async (req, res) => {
-    const db = await connection(); // obtenemos la conexión
+    const client = await getPacienteClient();
+    const db = client.db(dbName); // obtenemos la conexión
+    
+    //const db = await connection(); // obtenemos la conexión
     const email = req.params.email;
     console.log(email);
     //const cultura = await db.collection('paciente').find({_id: ObjectID(dato)}).toArray();
@@ -158,7 +162,10 @@ module.exports = {
       });
   },
   getPacientsbyDni: async (req, res) => {
-    const db = await connection(); // obtenemos la conexión
+    const client = await getPacienteClient();
+    const db = client.db(dbName); // obtenemos la conexión
+    
+    //const db = await connection(); // obtenemos la conexión
     const dato = req.params.dni;
     //const cultura = await db.collection('paciente').find({_id: ObjectID(dato)}).toArray();
     //res.json(cultura);

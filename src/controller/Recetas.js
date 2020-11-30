@@ -1,5 +1,5 @@
 //importamos la conexion
-const connection = require('../connection/db-Recetas');
+const { getRecetasClient, dbName } = require('../connection/db-Recetas');
 const assert = require('assert');
 const { ObjectID } = require('mongodb');
 
@@ -17,10 +17,14 @@ cloudinary.config({
 
 module.exports = {
     getRecipe: async (req, res) => {
-        const db = await connection(); // obtenemos la conexión
+        const client = await getRecetasClient();
+        const db = client.db(dbName); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         //var docs = await db.collection('Receta').find().toArray();
         //res.json(docs);
         await db.collection('Receta').find().toArray((err, result) => {
+            client.close();
             if (err) throw err;
             console.log("datos obtenidos");
             res.json(result);
@@ -28,7 +32,11 @@ module.exports = {
     },
     addRecipe: async (req, res) => {
         const receta = req.body; //creamos una nueva tarea
-        const db = await connection(); // obtenemos la conexión
+        
+        const client = await getRecetasClient();
+        const db = client.db(dbName); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         //await db.collection('cultura').save(cultura);
         //await db.collection('Receta').insertOne(cultura);
         //await db.collection('cultura').insertMany(cultura);
@@ -77,6 +85,7 @@ module.exports = {
 
         //guarda en la bd
         await db.collection('Receta').insertOne(rec, (err, result) => {
+            client.close();
             if (err) throw err;
             console.log("dato agregado");
             res.json(rec);
@@ -84,7 +93,12 @@ module.exports = {
     },
     deleteRecipe: async (req, res) => {
         const dato = req.params.id;
-        const db = await connection(); // obtenemos la conexión
+        
+        const client = await getRecetasClient();
+        const db = client.db(dbName); // obtenemos la conexión
+        
+        
+        //const db = await connection(); // obtenemos la conexión
         /*await db.collection('cultura').remove({
             _id: id
         });*/
@@ -106,6 +120,7 @@ module.exports = {
         await db.collection('Receta').deleteOne({
             _id: ObjectID(dato)
         }, (err, obj) => {
+            client.close();
             if (err) throw err;
             console.log("Dato borrado");
             res.json("Borrado");
@@ -116,7 +131,13 @@ module.exports = {
         //obtiene los datos a actualizar
         //const nuevoDato = req.body;
         //const nuevoDato = { $set: req.body };
-        const db = await connection(); // obtenemos la conexión
+        
+        
+        const client = await getRecetasClient();
+        const db = client.db(dbName); // obtenemos la conexión
+        
+        
+        //const db = await connection(); // obtenemos la conexión
         /*await db.collection('Receta').updateOne({
             _id: ObjectID(dato)
         }, nuevoDato);
@@ -152,15 +173,21 @@ module.exports = {
             if (err) throw err;
             console.log("Dato actualizado");
             const actualizado = await db.collection('Receta').find({_id: ObjectID(dato)}).toArray();
+            client.close();
             res.json(actualizado);
         });
+        
     },
     updateRecipe: async (req, res) => {
         const dato = req.params.id;
         //obtiene los datos a actualizar
         //const nuevoDato = req.body;
         const nuevoDato = { $set: req.body };
-        const db = await connection(); // obtenemos la conexión
+        
+        const client = await getRecetasClient();
+        const db = client.db(dbName); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         /*await db.collection('Receta').updateOne({
             _id: ObjectID(dato)
         }, nuevoDato);
@@ -171,27 +198,37 @@ module.exports = {
             if (err) throw err;
             console.log("Dato actualizado");
             const actualizado = await db.collection('Receta').find({_id: ObjectID(dato)}).toArray();
+            client.close();
             res.json(actualizado);
         });
     },
     getRecipebyId: async (req, res) => {
-        const db = await connection(); // obtenemos la conexión
+        const client = await getRecetasClient();
+        const db = client.db(dbName); // obtenemos la conexión
+        
+        
+        //const db = await connection(); // obtenemos la conexión
         const dato = req.params.id; 
         //const cultura = await db.collection('Receta').find({_id: ObjectID(dato)}).toArray();
         //res.json(cultura);
         //console.log("Dato por id obtenido");
         await db.collection('Receta').find({_id: ObjectID(dato)}).toArray((err, result) => {
+            client.close();
             if (err) throw err;
             console.log("Dato por id obtenido");
             res.json(result);
         });
     },
     getRecipeString: async (req, res) => {
-        const db = await connection(); // obtenemos la conexión
+        const client = await getRecetasClient();
+        const db = client.db(dbName); // obtenemos la conexión
+        
+        //const db = await connection(); // obtenemos la conexión
         //var docs = await db.collection('Receta').find().toArray();
         //res.json(docs);
         var result = await db.collection('Receta').find().toArray();
         var arreglo = []
+        client.close();
 
         result.forEach((elemento, index) => {
             //console.log(typeof(elemento.titulo))
@@ -206,10 +243,15 @@ module.exports = {
         const tokens = nombre.split('$20')
         const frase = tokens.join(' ')
 
-        const db = await connection(); // obtenemos la conexión
+        const client = await getRecetasClient();
+        const db = client.db(dbName); // obtenemos la conexión
+        
+        
+        //const db = await connection(); // obtenemos la conexión
         //var docs = await db.collection('paciente').find().toArray();
         //res.json(docs);
         await db.collection('Receta').find({titulo: frase}).toArray((err, result) => {
+            client.close();
             if (err) throw err;
             console.log("datos obtenidos");
             res.json(result);
